@@ -1,15 +1,14 @@
-const Producto = require('../models').Producto;
+const Producto = require('../models').producto;
 
 /**
  * Listar todos los productos registrados 
  */
 module.exports = {
   list(req, res) {
-    return Producto
+    return Producto.findAll
       .findAll({
         include: [{
           model: Producto,
-          as: 'productos'
         }],
         order: [
           ['crea_prod', 'DESC'],
@@ -29,7 +28,6 @@ module.exports = {
       .findById(req.params.id, {
         include: [{
           model: Producto,
-          as: 'productos'
         }],
       })
       .then((producto) => {
@@ -65,7 +63,6 @@ module.exports = {
       .findById(req.params.id, {
         include: [{
           model: Producto,
-          as: 'productos'
         }],
       })
       .then(producto => {

@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0f0b0fe3-4f1b-4262-b993-1ef2a65b3b9c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventario/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/inventario/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventario/controllers/producto.js" beforeDir="false" afterPath="$PROJECT_DIR$/inventario/controllers/producto.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventario/migrations/20190522161312-create-producto.js" beforeDir="false" afterPath="$PROJECT_DIR$/inventario/migrations/20190522161312-create-producto.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventario/models/producto.js" beforeDir="false" afterPath="$PROJECT_DIR$/inventario/models/producto.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventario/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/inventario/routes/index.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +11,45 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inventario/controllers/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/inventario/routes/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inventario/controllers/producto.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+              <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inventario/models/producto.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -26,14 +59,17 @@
       <list>
         <option value="$PROJECT_DIR$/inventario/migrations/20190522161312-create-producto.js" />
         <option value="$PROJECT_DIR$/inventario/package.json" />
-        <option value="$PROJECT_DIR$/inventario/controllers/producto.js" />
-        <option value="$PROJECT_DIR$/inventario/models/producto.js" />
-        <option value="$PROJECT_DIR$/inventario/routes/index.js" />
         <option value="$PROJECT_DIR$/inventario/app.js" />
+        <option value="$PROJECT_DIR$/inventario/config/config.json" />
+        <option value="$PROJECT_DIR$/inventario/models/producto.js" />
+        <option value="$PROJECT_DIR$/inventario/migrations/20190523191924-create-producto.js" />
+        <option value="$PROJECT_DIR$/inventario/controllers/producto.js" />
+        <option value="$PROJECT_DIR$/inventario/controllers/index.js" />
+        <option value="$PROJECT_DIR$/inventario/routes/index.js" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="4">
     <option name="x" value="683" />
     <option name="y" value="25" />
     <option name="width" value="683" />
@@ -50,6 +86,35 @@
             <path>
               <item name="apiadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="apiadmin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apiadmin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apiadmin" type="462c0819:PsiDirectoryNode" />
+              <item name="inventario" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apiadmin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apiadmin" type="462c0819:PsiDirectoryNode" />
+              <item name="inventario" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apiadmin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apiadmin" type="462c0819:PsiDirectoryNode" />
+              <item name="inventario" type="462c0819:PsiDirectoryNode" />
+              <item name="controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apiadmin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apiadmin" type="462c0819:PsiDirectoryNode" />
+              <item name="inventario" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apiadmin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apiadmin" type="462c0819:PsiDirectoryNode" />
+              <item name="inventario" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -99,17 +164,18 @@
       <option name="presentableId" value="Default" />
       <updated>1558550831075</updated>
       <workItem from="1558550832817" duration="3208000" />
-      <workItem from="1558609636597" duration="17611000" />
+      <workItem from="1558609636597" duration="20955000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20819000" />
+    <option name="totallyTimeSpent" value="24163000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1366" height="743" extended-state="6" />
+    <frame x="683" y="25" width="683" height="743" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23712121" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.34536892" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -200,16 +266,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventario/controllers/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inventario/config/config.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/inventario/bin/www">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -220,29 +276,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventario/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inventario/models/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-108" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventario/.sequelizerc">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventario/config/config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventario/migrations/20190523191924-create-producto.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/inventario/models/producto.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+        <state relative-caret-position="90">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inventario/controllers/producto.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        <state relative-caret-position="165">
+          <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventario/controllers/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventario/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
         </state>
       </provider>
     </entry>

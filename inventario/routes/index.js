@@ -9,10 +9,10 @@ router.get('/', function(req, res, next) {
 });
 
 /* Classroom Router */
-router.get('/api/classroom', productoController.list);
-router.get('/api/classroom/:id', productoController.getById);
-router.post('/api/classroom', productoController.add);
-router.put('/api/classroom/:id', productoController.update);
-router.delete('/api/classroom/:id', productoController.delete);
+router.get('/api/productos', productoController.list);
+router.get('/api/productos/:id', productoController.getById);
+router.post('/api/productos', productoController.add);
+router.put('/api/productos/:id', productoController.update);
+router.delete('/api/productos/:id', productoController.delete);
 
 module.exports = router;

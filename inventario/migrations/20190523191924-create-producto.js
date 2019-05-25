@@ -17,8 +17,9 @@ module.exports = {
       desc_prod: {
         type: Sequelize.STRING
       },
-      dele_prod: {
-        type: Sequelize.BOOLEAN
+      deleted: {
+        type: Sequelize.BOOLEAN,
+          defaultValue: false
       },
       createdAt: {
         allowNull: false,

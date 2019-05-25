@@ -1,26 +1,30 @@
-const Producto = require('../models').Producto;
+const Productos = require('../models').Productos;
 
 module.exports = {
-  list(req, res) {
-    return Producto
-      .findAll({
-        include: [{
-          model: Producto,
-          as: 'productos'
-        }],
-        order: [
-          ['createdAt', 'DESC'],
-        ],
-      })
-      .then((producto) => res.status(200).send(producto))
-      .catch((error) => { res.status(400).send(error); });
-  },
+    list: function (req, res) {
+        return Productos
+            .findAll({
+                include: [{
+                    model: Productos,
+                    all:true,
+                    as: 'productos'
+                }],
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
+            })
+            .then((producto) => res.status(200).send(producto))
+            .catch((error) => {
+                res.status(500).send(error);
+            });
+    },
 
   getById(req, res) {
-    return Producto
+    return Productos
       .findById(req.params.id, {
         include: [{
-          model: Producto,
+          model: Productos,
+            all:true,
           as: 'productos'
         }],
       })
@@ -36,7 +40,7 @@ module.exports = {
   },
 
   add(req, res) {
-    return Producto
+    return Productos
       .create({
         nomb_prod: req.body.nomb_prod,
       })
@@ -45,10 +49,10 @@ module.exports = {
   },
 
   update(req, res) {
-    return Producto
+    return Productos
       .findById(req.params.id, {
         include: [{
-          model: Producto,
+          model: Productos,
           as: 'productos'
         }],
       })
@@ -58,7 +62,7 @@ module.exports = {
             message: 'Producto Not Found',
           });
         }
-        return producto
+        return productos
           .update({
             nomb_prod: req.body.nomb_prod || producto.nomb_prod,
           })
@@ -69,7 +73,7 @@ module.exports = {
   },
 
   delete(req, res) {
-    return Producto
+    return Productos
       .findById(req.params.id)
       .then(producto => {
         if (!producto) {

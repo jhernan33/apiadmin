@@ -4,10 +4,11 @@ module.exports = {
     list: function (req, res) {
         return Productos
             .findAll({
+                offset: 5, limit: 5,
                 include: [{
                     model: Productos,
                     all:true,
-                    as: 'productos'
+                    as: 'productos',
                 }],
                 order: [
                     ['createdAt', 'DESC'],
@@ -21,7 +22,7 @@ module.exports = {
 
   getById(req, res) {
     return Productos
-      .findById(req.params.id, {
+      .findByPk(req.params.id, {
         include: [{
           model: Productos,
             all:true,
@@ -31,7 +32,7 @@ module.exports = {
       .then((producto) => {
         if (!producto) {
           return res.status(404).send({
-            message: 'Classroom Not Found',
+            message: 'Producto no Encontrado',
           });
         }
         return res.status(200).send(producto);

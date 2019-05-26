@@ -17,6 +17,12 @@ module.exports = {
       desc_prod: {
         type: Sequelize.STRING
       },
+        prec_prod:{
+          type: Sequelize.DOUBLE
+        },
+        imag_prod:{
+        type: Sequelize.JSON
+        },
       deleted: {
         type: Sequelize.BOOLEAN,
           defaultValue: false

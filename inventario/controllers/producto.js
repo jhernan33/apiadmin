@@ -1,6 +1,12 @@
 const Productos = require('../models').Productos;
 
 module.exports = {
+    /**
+     * Listado de Productos
+     * @param req
+     * @param res
+     * @returns {Promise<T | never>}
+     */
     list: function (req, res) {
         return Productos
             .findAll({
@@ -19,7 +25,12 @@ module.exports = {
                 res.status(500).send(error);
             });
     },
-
+    /**
+     * Buscar un Producto
+     * @param req
+     * @param res
+     * @returns {Promise<T | never>}
+     */
   getById(req, res) {
     return Productos
       .findByPk(req.params.id, {
@@ -40,6 +51,12 @@ module.exports = {
       .catch((error) => res.status(400).send(error));
   },
 
+    /**
+     * Agregar un Producto
+     * @param req
+     * @param res
+     * @returns {Promise<T | never>}
+     */
   add(req, res) {
     return Productos
       .create({
@@ -51,6 +68,12 @@ module.exports = {
       .catch((error) => res.status(400).send(error));
   },
 
+    /**
+     * Actualizar un Producto
+     * @param req
+     * @param res
+     * @returns {Promise<T | never>}
+     */
   update(req, res) {
     return Productos
       .findByPk(req.params.id, {
@@ -78,6 +101,12 @@ module.exports = {
       .catch((error) => res.status(500).send(error));
   },
 
+    /**
+     * Borrar un Producto
+     * @param req
+     * @param res
+     * @returns {Promise<T | never>}
+     */
   delete(req, res) {
     return Productos
       .findByPk(req.params.id)

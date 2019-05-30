@@ -8,7 +8,7 @@ module.exports = {
      * @returns {Promise<T | never>}
      */
     list: function (req, res) {
-        return Productos
+      /* return Productos
             .findAll({
                 offset: 5, limit: 5,
                 include: [{
@@ -23,7 +23,33 @@ module.exports = {
             .then((producto) => res.status(200).send(producto))
             .catch((error) => {
                 res.status(500).send(error);
-            });
+            }); */
+            let limit = 10;
+            let offset = 0;
+            return Productos
+            .findAndCountAll()
+            .then((producto) => {
+              let page = req.params.page;
+              let pages = Math.ceil(producto.count / limit);
+              offset = limit * (page - 1);
+              Productos.findAll({
+                include: [{
+                  model: Productos,
+                  all:true,
+                  as: Productos,
+                }],
+                order: [
+                  /* ['createdAt', 'ASC'], */
+                  ['id', 'ASC'],
+                ],
+                limit: limit,
+                offset: offset
+              })
+              .then((producto) =>{
+                res.status(200).json({'Resultado': producto, 'count':producto.count, 'pages:': pages});
+              });
+            })
+            .catch((error) => res.status(500).send(error), console.error);
     },
     /**
      * Buscar un Producto

@@ -5,11 +5,11 @@ const productoController = require('../controllers').producto;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Welcome Api Rest in NodeJs - Express - Sequelize - Postgresql' });
 });
 
 /* Classroom Router */
-router.get('/api/productos', productoController.list);
+router.get('/api/productos/:page', productoController.list);
 router.get('/api/productos/:id', productoController.getById);
 router.post('/api/productos', productoController.add);
 router.put('/api/productos/:id', productoController.update);

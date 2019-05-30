@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     codi_prod: DataTypes.INTEGER,
     nomb_prod: DataTypes.STRING,
     desc_prod: DataTypes.STRING,
+    prec_prod: DataTypes.DOUBLE,
     deleted: DataTypes.BOOLEAN
   }, {});
   Productos.associate = function(models) {

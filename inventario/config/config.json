@@ -1,23 +1,26 @@
 {
   "development": {
     "username": "postgres",
-    "password": 123456,
-    "database": "bd_admin",
+    "password": "123456",
+    "database": "d9fsgsnmg1h6v",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "port": "5432"
   },
   "test": {
-    "username": "postgres",
-    "password": 123456,
-    "database": "bd_admin",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "rbvoqebvtqbmcu",
+    "password": "6c20ca86cfcd97a0a64ff0f1f2941f9c9eea15bb5a49b44ee91a0c0203cddcce",
+    "database": "d9fsgsnmg1h6v",
+    "host": "ec2-54-83-201-84.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "port": "5432"
   },
   "production": {
-    "username": "postgres",
-    "password": 123456,
-    "database": "bd_admin",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "rbvoqebvtqbmcu",
+    "password": "6c20ca86cfcd97a0a64ff0f1f2941f9c9eea15bb5a49b44ee91a0c0203cddcce",
+    "database": "d9fsgsnmg1h6v",
+    "host": "ec2-54-83-201-84.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "port": "5432"
   }
 }

@@ -24,32 +24,56 @@ module.exports = {
             .catch((error) => {
                 res.status(500).send(error);
             }); */
-            let limit = 10;
-            let offset = 0;
+        if(!req.params.page){
+            //console.log('Vaaaaaaaaaaaaacio');
             return Productos
-            .findAndCountAll()
-            .then((producto) => {
-              let page = req.params.page;
-              let pages = Math.ceil(producto.count / limit);
-              offset = limit * (page - 1);
-              Productos.findAll({
-                include: [{
-                  model: Productos,
-                  all:true,
-                  as: Productos,
-                }],
-                order: [
-                  /* ['createdAt', 'ASC'], */
-                  ['id', 'ASC'],
-                ],
-                limit: limit,
-                offset: offset
-              })
-              .then((producto) =>{
-                res.status(200).json({'Resultado': producto, 'count':producto.count, 'pages:': pages});
-              });
-            })
-            .catch((error) => res.status(500).send(error), console.error);
+                .findAll({
+                    include: [{
+                       model: Productos,
+                       all:true,
+                       as: 'productos',
+                    }],
+                    order: [
+                        ['codi_prod','asc'],
+                    ],
+                })
+                .then((producto) => res.status(200).send(producto))
+                .catch((error) => {res.status(500).send(error)
+                });
+        }
+        else{
+            //console.log('Lleno');
+            let limit = 10;
+           let offset = 0;
+           return Productos
+           .findAndCountAll()
+           .then((producto) => {
+             let page = req.params.page;
+             if(page>=1){
+                 offset = limit * (page - 1);
+                 let pages = Math.ceil(producto.count / limit);
+             }
+             Productos.findAll({
+               include: [{
+                 model: Productos,
+                 all:true,
+                 as: Productos,
+               }],
+               order: [
+                 /* ['createdAt', 'ASC'], */
+                 ['id', 'ASC'],
+               ],
+               limit: limit,
+               offset: offset
+             })
+             /*.then((producto) =>{
+              /res.status(200).json({'Resultado': producto, 'count':producto.count, 'pages:': pages});
+             });*/
+                 //.then((producto) => res.status(200).send(producto))
+                 .then((producto) => res.status(200).json({producto,'cantidad':producto.count,'pages':pages}))
+           })
+           .catch((error) => res.status(500).send(error), console.error);
+        }
     },
     /**
      * Buscar un Producto
@@ -149,4 +173,6 @@ module.exports = {
       })
       .catch((error) => res.status(400).send(error));
   },
+
+
 };

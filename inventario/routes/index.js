@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router();  // Middleware de nivel de direccionador
 
 const productoController = require('../controllers').producto;
 
@@ -9,8 +9,8 @@ router.get('/', function(req, res, next) {
 });
 
 /* Classroom Router */
-router.get('/api/productos/:page', productoController.list);
-router.get('/api/productos/:id', productoController.getById);
+router.get('/api/productos/:page?', productoController.list);
+router.get('/api/producto/:id', productoController.getById);
 router.post('/api/productos', productoController.add);
 router.put('/api/productos/:id', productoController.update);
 router.delete('/api/productos/:id', productoController.delete);

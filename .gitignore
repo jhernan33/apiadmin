@@ -1,3 +1,5 @@
+# Temporary files created by the IDE
+.idea/
 # Logs
 logs
 *.log

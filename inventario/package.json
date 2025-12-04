@@ -3,18 +3,33 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "NODE_ENV=development node ./bin/www",
+    "audit": "npm audit"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.7",
-    "debug": "~4.4.3",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "http-errors": "~2.0.0",
-    "morgan": "~1.10.1",
-    "path-to-regexp": "^8.3.0",
-    "pg": "^8.16.3",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.7"
+    "body-parser": "1.20.4",
+    "cookie-parser": "1.4.7",
+    "cors": "2.8.5",
+    "debug": "4.4.3",
+    "dotenv": "16.4.7",
+    "ejs": "3.1.10",
+    "express": "4.22.1",
+    "express-rate-limit": "7.4.1",
+    "express-validator": "^7.3.1",
+    "helmet": "8.1.0",
+    "http-errors": "2.0.0",
+    "morgan": "1.10.1",
+    "pg": "8.16.3",
+    "pg-hstore": "2.3.4",
+    "sequelize": "6.37.7"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "nodemon": "3.1.4"
   }
 }

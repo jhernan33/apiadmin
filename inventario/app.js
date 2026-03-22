@@ -1,93 +1,73 @@
-// Load environment variables
-require('dotenv').config();
+'use strict';
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// environment.js ya invoca dotenv.config() — no duplicar aquí
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const morgan = require('morgan');
 
-// Security imports
 const { applySecurityMiddleware } = require('./middleware/security');
+const { errorHandler } = require('./middleware/errorHandler');
 const config = require('./config/environment');
 
-// Routes
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Routers
+const apiRouter = require('./routes');
 
-var app = express();
+const app = express();
 
-// ===== SECURITY CONFIGURATION =====
-// Apply all security middleware
+// ── Seguridad (Helmet, CORS, Rate Limit, sanitización) ───
 applySecurityMiddleware(app);
 
-// ===== VIEW ENGINE =====
+// ── View engine (error.ejs) ──────────────────────────────
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// ===== LOGGING =====
-const morganFormat = config.isDevelopment ? 'dev' : 'combined';
-app.use(logger(morganFormat));
+// ── Logging HTTP ─────────────────────────────────────────
+app.use(morgan(config.isDevelopment ? 'dev' : 'combined'));
 
-// ===== REQUEST PARSING =====
-// Limit request size to prevent large payload attacks
+// ── Parsers ───────────────────────────────────────────────
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ limit: '10kb', extended: false }));
 app.use(cookieParser(config.security.sessionSecret));
 
-// ===== STATIC FILES =====
+// ── Archivos estáticos ───────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public'), {
-  maxAge: '1d', // Cache static assets for 1 day
-  etag: false
+  maxAge: '1d',
+  etag: false,
 }));
 
-// ===== API ENDPOINTS =====
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// ===== HEALTH CHECK =====
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// ===== 404 HANDLER =====
-app.use(function(req, res, next) {
-  next(createError(404, 'Resource not found'));
-});
-
-// ===== ERROR HANDLER =====
-app.use(function(err, req, res, next) {
-  // Set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = config.isDevelopment ? err : {};
-
-  // Log error details in production
-  if (config.isProduction && err.status !== 404) {
-    console.error('Error:', {
-      status: err.status || 500,
-      message: err.message,
-      path: req.path,
-      method: req.method,
+// ── Health check profundo (verifica BD) ──────────────────
+app.get('/health', async (req, res) => {
+  try {
+    const { sequelize } = require('./models');
+    await sequelize.authenticate();
+    res.status(200).json({
+      status: 'ok',
+      db: 'connected',
+      timestamp: new Date().toISOString(),
+    });
+  } catch {
+    res.status(503).json({
+      status: 'error',
+      db: 'disconnected',
+      timestamp: new Date().toISOString(),
     });
   }
-
-  // Don't expose stack traces in production
-  const statusCode = err.status || 500;
-
-  // For API requests, return JSON
-  if (req.accepts('json') && !req.accepts('html')) {
-    return res.status(statusCode).json({
-      success: false,
-      error: {
-        status: statusCode,
-        message: config.isDevelopment ? err.message : 'Internal Server Error',
-      }
-    });
-  }
-
-  // For HTML requests, render error page
-  res.status(statusCode);
-  res.render('error');
 });
+
+// ── Página de bienvenida ─────────────────────────────────
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Inventario API — Node.js · Express · PostgreSQL' });
+});
+
+// ── API (versionada) ─────────────────────────────────────
+app.use('/', apiRouter);
+
+// ── 404 ──────────────────────────────────────────────────
+app.use((req, res, next) => next(createError(404, 'Ruta no encontrada')));
+
+// ── Error handler global (siempre al final) ──────────────
+app.use(errorHandler);
 
 module.exports = app;

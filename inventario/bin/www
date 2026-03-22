@@ -1,90 +1,81 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
+'use strict';
 
-var app = require('../app');
-var debug = require('debug')('inventario:server');
-var http = require('http');
+const app = require('../app');
+const http = require('http');
+const { sequelize } = require('../models');
 
 /**
- * Get port from environment and store in Express.
+ * Normaliza el puerto a número, string (named pipe) o false.
+ * @param {string} val
+ * @returns {number|string|boolean}
  */
-
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
 function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
+  const port = parseInt(val, 10);
+  if (isNaN(port)) return val;   // named pipe
+  if (port >= 0) return port;    // número de puerto
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
 
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+const server = http.createServer(app);
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+// ── Manejo de errores del servidor ───────────────────────
+server.on('error', (error) => {
+  if (error.syscall !== 'listen') throw error;
 
-  // handle specific listen errors with friendly messages
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      console.error(`[Server] ${bind} requiere privilegios de administrador`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      console.error(`[Server] ${bind} ya está en uso`);
       process.exit(1);
       break;
     default:
       throw error;
   }
-}
+});
 
-/**
- * Event listener for HTTP server "listening" event.
- */
+server.on('listening', () => {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  console.log(`[Server] Escuchando en ${bind} (${process.env.NODE_ENV || 'development'})`);
+});
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+// ── Graceful Shutdown ────────────────────────────────────
+// Garantiza que las conexiones activas terminen limpiamente
+// antes de apagar el proceso (crítico en Docker/Kubernetes).
+
+const shutdown = async (signal) => {
+  console.log(`[Server] ${signal} recibida. Cerrando gracefully...`);
+
+  server.close(async () => {
+    try {
+      await sequelize.close();
+      console.log('[Server] Conexión a BD cerrada correctamente.');
+      process.exit(0);
+    } catch (err) {
+      console.error('[Server] Error al cerrar la BD:', err.message);
+      process.exit(1);
+    }
+  });
+
+  // Forzar cierre si no termina en 10 segundos
+  setTimeout(() => {
+    console.error('[Server] Timeout en shutdown. Forzando cierre.');
+    process.exit(1);
+  }, 10_000).unref(); // .unref() evita que este timer bloquee el event loop
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM')); // Docker / Kubernetes
+process.on('SIGINT', () => shutdown('SIGINT'));   // Ctrl+C en desarrollo
+
+// ── Iniciar servidor ─────────────────────────────────────
+server.listen(port);

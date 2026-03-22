@@ -1,26 +1,23 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "123456",
-    "database": "d9fsgsnmg1h6v",
-    "host": "127.0.0.1",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
-    "port": "5432"
+    "logging": true
   },
   "test": {
-    "username": "rbvoqebvtqbmcu",
-    "password": "6c20ca86cfcd97a0a64ff0f1f2941f9c9eea15bb5a49b44ee91a0c0203cddcce",
-    "database": "d9fsgsnmg1h6v",
-    "host": "ec2-54-83-201-84.compute-1.amazonaws.com",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
-    "port": "5432"
+    "logging": false
   },
   "production": {
-    "username": "rbvoqebvtqbmcu",
-    "password": "6c20ca86cfcd97a0a64ff0f1f2941f9c9eea15bb5a49b44ee91a0c0203cddcce",
-    "database": "d9fsgsnmg1h6v",
-    "host": "ec2-54-83-201-84.compute-1.amazonaws.com",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
-    "port": "5432"
+    "logging": false,
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
 }

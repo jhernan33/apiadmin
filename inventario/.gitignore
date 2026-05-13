@@ -30,3 +30,6 @@ logs/
 
 # Config with secrets
 config/config.json
+
+#scripts
+scripts/.backups/

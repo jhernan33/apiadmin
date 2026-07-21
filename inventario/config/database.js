@@ -22,8 +22,12 @@ const sequelize = new Sequelize(
       acquire: 30_000,
       idle: 10_000,
     },
+    // rejectUnauthorized: true por defecto — desactivarlo acepta cualquier
+    // certificado y expone la conexión a MITM. Solo se relaja si se declara
+    // explícitamente DB_SSL_REJECT_UNAUTHORIZED=false (p. ej. certificado
+    // autofirmado en un entorno interno).
     dialectOptions: database.ssl
-      ? { ssl: { require: true, rejectUnauthorized: false } }
+      ? { ssl: { require: true, rejectUnauthorized: database.sslRejectUnauthorized } }
       : {},
     define: {
       timestamps: true,

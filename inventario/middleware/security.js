@@ -32,7 +32,8 @@ const helmetMiddleware = helmet({
     policy: 'strict-origin-when-cross-origin',
   },
   noSniff: true,
-  xssFilter: true,
+  // xssFilter queda en el default de helmet (X-XSS-Protection: 0). El filtro
+  // XSS de los navegadores legacy está deprecado y era explotable por sí mismo.
 });
 
 /**
@@ -51,7 +52,8 @@ const corsMiddleware = cors({
  */
 const rateLimiter = rateLimit({
   windowMs: security.rateLimitWindowMs,
-  max: security.rateLimitMaxRequests,
+  limit: security.rateLimitMaxRequests, // `max` está deprecado desde v7
+
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
@@ -88,19 +90,12 @@ const sanitizeInput = (req, res, next) => {
  * Security headers middleware - Custom security headers
  */
 const securityHeaders = (req, res, next) => {
-  // Prevent caching of sensitive information
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
-
-  // Prevent MIME type sniffing
-  res.set('X-Content-Type-Options', 'nosniff');
-
-  // Enable XSS protection
-  res.set('X-XSS-Protection', '1; mode=block');
-
-  // Prevent clickjacking
-  res.set('X-Frame-Options', 'DENY');
+  // no-store solo para respuestas de la API: aplicarlo globalmente anulaba el
+  // `maxAge: '1d'` de express.static y forzaba a revalidar cada asset.
+  // X-Content-Type-Options y X-Frame-Options ya los emite helmet.
+  if (req.path.startsWith('/api')) {
+    res.set('Cache-Control', 'no-store');
+  }
 
   next();
 };
@@ -109,6 +104,10 @@ const securityHeaders = (req, res, next) => {
  * Apply all security middleware
  */
 const applySecurityMiddleware = (app) => {
+  // Sin esto, detrás de un load balancer todas las peticiones comparten la IP
+  // del proxy y el rate limit se aplica al conjunto en lugar de por cliente.
+  app.set('trust proxy', security.trustProxy);
+
   // Apply helmet first
   app.use(helmetMiddleware);
 

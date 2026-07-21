@@ -45,6 +45,7 @@ module.exports = {
     name: DB_NAME,
     dialect: process.env.DB_DIALECT || 'postgres',
     ssl: process.env.DB_SSL === 'true',
+    sslRejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false',
   },
 
   security: {
@@ -54,6 +55,10 @@ module.exports = {
     corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:3000',
     rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) || 900_000,
     rateLimitMaxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS, 10) || 100,
+    // Nº de proxies de confianza delante de la app (LB / ingress / CDN).
+    // 0 = sin proxy. Necesario para que el rate limit vea la IP real del
+    // cliente y no la del proxy (que la haría compartir cuota entre todos).
+    trustProxy: parseInt(process.env.TRUST_PROXY, 10) || 0,
   },
 
   logging: {

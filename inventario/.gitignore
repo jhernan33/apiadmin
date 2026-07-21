@@ -4,8 +4,9 @@
 .env.*.local
 
 # Dependencies
+# package-lock.json SÍ se versiona: es lo que hace reproducible `npm ci`
+# y lo que fija las versiones parcheadas de las dependencias transitivas.
 node_modules/
-package-lock.json
 npm-debug.log*
 
 # IDE
@@ -27,9 +28,6 @@ Thumbs.db
 # Logs
 logs/
 *.log
-
-# Config with secrets
-config/config.json
 
 #scripts
 scripts/.backups/

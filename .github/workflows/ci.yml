@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  # Las vulnerabilidades aparecen sin que nadie toque el código: el audit
+  # semanal las detecta aunque el repo esté inactivo.
+  schedule:
+    - cron: '0 6 * * 1'
+
+# Cancela ejecuciones viejas del mismo branch en vez de encolarlas.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: inventario
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: inventario/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+
+  test:
+    name: Test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Mínimo soportado (engines) y versión de la imagen Docker.
+        node: [20, 22]
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        # Credenciales fijadas en tests/setup.js.
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: inventario_test
+        ports:
+          - 5432:5432
+        # Sin esto los tests arrancan antes de que Postgres acepte conexiones.
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: inventario/package-lock.json
+      - run: npm ci
+      # Los tests de integración hacen sync({ force: true }): necesitan la BD.
+      - run: npm run test:coverage
+
+  audit:
+    name: Security audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: inventario/package-lock.json
+      - run: npm ci
+      # Falla el build ante vulnerabilidades high/critical.
+      - run: npm audit --audit-level=high
+      # Las de producción son las que realmente quedan expuestas en runtime:
+      # se reportan aparte para no perderlas entre el ruido de devDependencies.
+      - name: Production dependency audit
+        run: npm audit --omit=dev --audit-level=moderate
+
+  docker:
+    name: Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: inventario
+          push: false
+          load: true
+          tags: inventario:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      # Verifica que la imagen no corra como root.
+      - name: Verify non-root user
+        run: |
+          USER_ID=$(docker run --rm --entrypoint id inventario:ci -u)
+          echo "UID en el contenedor: $USER_ID"
+          [ "$USER_ID" != "0" ]

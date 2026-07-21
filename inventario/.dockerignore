@@ -1,0 +1,28 @@
+# node_modules se reinstala con `npm ci` dentro de la imagen: copiar el del
+# host mezclaría binarios nativos (pg) compilados para otra plataforma.
+node_modules
+npm-debug.log*
+
+# Secretos — nunca deben entrar en una capa de la imagen.
+.env
+.env.local
+.env.*.local
+
+.git
+.gitignore
+.github
+
+# Nada de esto se ejecuta en runtime.
+tests
+coverage
+scripts
+migrations/*.md
+*.md
+!README.md
+
+.vscode
+.idea
+.claude
+*.swp
+Dockerfile
+.dockerignore

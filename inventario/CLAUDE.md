@@ -18,11 +18,16 @@ npm run lint                    # eslint .
 npx sequelize-cli db:migrate                  # run pending migrations
 npx sequelize-cli db:migrate:undo             # roll back last migration
 npx sequelize-cli migration:generate --name X # scaffold a new migration
+
+docker build -t inventario .   # multi-stage, runs as the non-root `node` user
+docker run -p 3000:3000 --env-file .env inventario
 ```
 
-Sequelize CLI reads `DATABASE_URL`, which `config/environment.js` builds from `DB_*` env vars at boot. Migrations live in `migrations/`; config in `config/config.json` (per-NODE_ENV, `use_env_variable: DATABASE_URL`).
+CI (`.github/workflows/ci.yml`, at the repo root — the app lives in `inventario/`, so every job sets that working directory) runs lint, tests on Node 20 + 22 against a `postgres:16` service container, `npm audit`, and a Docker build that asserts the image is not root.
 
-Tests need a reachable PostgreSQL at `127.0.0.1:5432` with DB `inventario_test` (credentials hardcoded in `tests/setup.js`). Integration tests call `sequelize.sync({ force: true })` in `beforeAll` — they reset the schema, not just rows.
+Sequelize CLI reads `DATABASE_URL`, which `config/environment.js` builds from `DB_*` env vars at boot. Migrations live in `migrations/`; config in `config/config.js` (per-NODE_ENV, `use_env_variable: DATABASE_URL`, SSL derived from `DB_SSL`/`DB_SSL_REJECT_UNAUTHORIZED`). It replaced the old `config/config.json`, which hardcoded `rejectUnauthorized: false`.
+
+Tests need a reachable PostgreSQL at `127.0.0.1:5432` with DB `inventario_test` (credentials hardcoded in `tests/setup.js` — `postgres`/`postgres`, and `setup.js` overwrites `process.env`, so they cannot be overridden from the shell). A local PostgreSQL already bound to 5432 with different credentials makes every integration test fail with `password authentication failed`; stop it or run the suite against a container. Integration tests call `sequelize.sync({ force: true })` in `beforeAll` — they reset the schema, not just rows.
 
 ## Architecture
 
@@ -59,7 +64,7 @@ When adding fields, update both.
 
 **Auth.** `middleware/auth.js` exports `authenticate` (Bearer JWT → `req.user`) and `authorize(...roles)`. Convention: read routes public, writes require `authenticate`. Tests sign their own JWTs with the test secret in `tests/setup.js`.
 
-**Security middleware** is applied as a bundle by `applySecurityMiddleware(app)` (helmet w/ CSP, CORS, `express-rate-limit` skipping `/health`, body trimming/truncation). The rate limiter is global — keep `/health` skipped if you add more checks at that path.
+**Security middleware** is applied as a bundle by `applySecurityMiddleware(app)` (`trust proxy` from `TRUST_PROXY`, helmet w/ CSP, CORS, `express-rate-limit` skipping `/health`, body trimming/truncation). The rate limiter is global — keep `/health` skipped if you add more checks at that path. `securityHeaders` only sets `Cache-Control: no-store` on `/api*`; applying it globally would defeat the `maxAge` on `express.static`. Don't re-add `X-XSS-Protection: 1` — helmet's `0` is deliberate.
 
 **Config.** `config/environment.js` is the single source of truth for env vars; it fails fast at startup if any of `DB_HOST/DB_PORT/DB_USERNAME/DB_PASSWORD/DB_NAME/JWT_SECRET/SESSION_SECRET` are missing. Import config from there, not `process.env` directly. `bin/www` handles graceful shutdown (SIGTERM/SIGINT → close server → close Sequelize, 10s force-quit timer).
 

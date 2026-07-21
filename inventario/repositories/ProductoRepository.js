@@ -1,6 +1,5 @@
 'use strict';
 
-const { Op } = require('sequelize');
 const { Producto } = require('../models');
 const { NotFoundError } = require('../utils/ApiError');
 

@@ -1,0 +1,11 @@
+{
+  "name": "deepmerge",
+  "version": "4.3.2-apiadmin.0",
+  "description": "Local security-patched copy of deepmerge for Jest",
+  "main": "dist/cjs.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}

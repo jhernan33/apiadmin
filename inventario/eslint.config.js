@@ -10,7 +10,7 @@ const js = require('@eslint/js');
 
 module.exports = [
   {
-    ignores: ['node_modules/**', 'coverage/**', 'public/**', 'scripts/.backups/**'],
+    ignores: ['node_modules/**', 'coverage/**', 'public/**', 'scripts/.backups/**', 'vendor/**'],
   },
   js.configs.recommended,
   {

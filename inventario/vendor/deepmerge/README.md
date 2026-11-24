@@ -7,5 +7,5 @@ reject `__proto__` keys when copying both target and source properties.
 
 The package version is `4.3.2-apiadmin.0` so dependency scanners no longer match
 the affected upstream range. Keep the CommonJS and UMD builds in sync with
-`index.js`, and replace this copy with an official patched release when one is
-published.
+`index.js`, which is self-contained and has no external runtime dependencies.
+Replace this copy with an official patched release when one is published.

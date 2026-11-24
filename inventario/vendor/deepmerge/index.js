@@ -1,4 +1,16 @@
-var defaultIsMergeableObject = require('is-mergeable-object')
+function defaultIsMergeableObject(value) {
+	return !!value && typeof value === 'object'
+		&& Object.prototype.toString.call(value) !== '[object RegExp]'
+		&& Object.prototype.toString.call(value) !== '[object Date]'
+		&& !isReactElement(value)
+}
+
+var canUseSymbol = typeof Symbol === 'function' && Symbol.for
+var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7
+
+function isReactElement(value) {
+	return value.$$typeof === REACT_ELEMENT_TYPE
+}
 
 function emptyTarget(val) {
 	return Array.isArray(val) ? [] : {}

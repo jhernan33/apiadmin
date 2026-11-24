@@ -1,5 +1,13 @@
 # Guía: actualización de dependencias con `scripts/update-deps.sh`
 
+## Recomendaciones de seguridad (noviembre de 2026)
+
+- Ejecutar `npm audit` y `npm audit --omit=dev` después de cada cambio en `package-lock.json`. Revisar también los avisos de GitHub: la cifra de `npm audit` depende de la base de datos del registro en ese momento.
+- Mantener las anulaciones de `glob` y `minimatch` mientras Jest, ESLint y Nodemon acepten versiones vulnerables. Comprobar la suite de pruebas tras cada actualización de estas anulaciones, porque son saltos de versión mayor respecto de algunas dependencias transitivas.
+- Conservar `vendor/deepmerge` hasta que exista una versión oficial corregida. La versión local `4.3.2-apiadmin.0` y `npm audit` no demuestran por sí solos que el parche sea seguro; revisar los tres archivos JavaScript si se modifica esa copia.
+- Ejecutar `npm run test:integration` con PostgreSQL de pruebas disponible antes de desplegar cambios de dependencias. La suite necesita la base `inventario_test` en `127.0.0.1:5432`.
+- Usar `npm ci` en CI y despliegues para instalar exactamente las versiones del lockfile y repetir la auditoría de forma periódica.
+
 Este script automatiza el proceso de auditar y actualizar dependencias npm con respaldo automático, reporte y reversión sencilla. No hardcodea versiones: consulta `npm outdated` / `npm audit` en tiempo de ejecución.
 
 ---
